@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GKeep</title>
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=roboto:400" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+        /* Assuming your list is given an ID or class */
+        #notes-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+        }
+
+        #notes-list li {
+            width: 30%; /* Adjust as needed */
+            margin: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #notes-list li:hover {
+            border: 1px solid rgba(255, 102, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+        }
+
+        #notes-list h3 {
+            font-size: 1.2em;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #notes-list p {
+            font-size: 1em;
+        }
+
+        form {
+            width: auto;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            outline: none;
+            width: 100%; /* Adjusted width to accommodate padding */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+
+        input[type="submit"] {
+            background-color: #ff6600;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff3300;
+        }
+
+        ul#notes-list li a.delete-link {
+            color: #fff;
+            background-color: #ff3333;
+            padding: 8px 12px; /* Adjust padding for smaller button */
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        ul#notes-list li a.delete-link:hover {
+            background-color: #ff0000;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+
+    </style>
+
+
+
+</head>
+<body>
+
+    <ul id="notes-list">
+        <% notes.forEach((note) => { %>
+            <li>
+                <h3><%= note.title %></h3>
+                <p><%= note.content %></p>
+                <p>Created on: <%= new Date(parseInt(note.createdTimestamp)).toLocaleDateString() %></p>
+                <a href="/note/delete/<%= note.id %>" class="delete-link">Delete</a>
+            </li>
+        <% }); %>
+    </ul>
+
+    <button id="myBtn">Open Modal</button>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <form action="/note/create" method="post">
+                <input type="text" name="title" id="title" placeholder="Enter title" autocomplete="off">
+                <input type="text" name="content" id="content" placeholder="Enter content" autocomplete="off"/>
+                <input type="submit" value="Create Note">
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the button, open the modal
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        })
+    </script>
+
+
+
+</body>
+</html>
